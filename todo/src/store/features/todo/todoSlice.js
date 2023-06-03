@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit"
-
 const initialState = {
   todos: JSON.parse(localStorage.getItem("todos")) || [],
   toggleForm: true,
@@ -14,18 +13,31 @@ export const todoSlice = createSlice({
       state.todos = [...state.todos, action.payload]
       localStorage.setItem("todos", JSON.stringify(state.todos))
     },
+
     todosCleared: (state) => {
       state.todos = []
       localStorage.removeItem("todos")
     },
+
     todoDeleted: (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload)
       localStorage.setItem("todos", JSON.stringify(state.todos))
     },
+
     toggleInputForm: (state, action) => {
       state.toggleForm = !state.toggleForm
       state.todoUpdate = { ...state.todoUpdate, ...action.payload }
     },
+
+    todoToggled: (state, action) => {
+      const { id, isDone } = action.payload
+      const todo = state.todos.find((todo) => todo.id === id)
+      if (todo) {
+        todo.isDone = isDone
+        localStorage.setItem("todos", JSON.stringify(state.todos))
+      }
+    },
+
     todoUpdated: (state, action) => {
       const { id, name } = action.payload
       state.todos = state.todos.map((todo) =>
@@ -36,11 +48,16 @@ export const todoSlice = createSlice({
     },
   },
 })
+
+// ...
+
 export const {
   todoAdded,
   todosCleared,
   todoDeleted,
   toggleInputForm,
   todoUpdated,
+  todoToggled,
 } = todoSlice.actions
+
 export default todoSlice.reducer

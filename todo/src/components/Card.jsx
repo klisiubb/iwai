@@ -2,8 +2,7 @@ import AddTODOForm from "./AddTODOForm"
 import UpdateTODOForm from "./UpdateTODOForm"
 import SingleTODOCard from "./SingleTODOCard"
 import { todosCleared } from "../store/features/todo/todoSlice"
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 const Card = () => {
   const todos = useSelector((state) => state.todos.todos)
@@ -42,7 +41,11 @@ const Card = () => {
         <ul className="w-full max-w-lg space-y-4">
           {todos.map((todo) => (
             <li key={todo.id}>
-              <SingleTODOCard id={todo.id} name={todo.name} />
+              <SingleTODOCard
+                id={todo.id}
+                name={todo.name}
+                isDone={todo.isDone}
+              />
             </li>
           ))}
         </ul>
